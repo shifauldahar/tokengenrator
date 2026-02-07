@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Visitor Token Generator — Shifa-ul-Dahar</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <img class="brand-logo" src="logo.png" alt="Shifa-ul-Dahar Logo" />
+      <div class="brand-text">
+        <div class="brand-title">SHIFA-UL-DAHAR</div>
+        <div class="brand-subtitle">Visitor Queue & Token System</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="btnGoToken" class="btn btn-ghost active">Token</button>
+      <button id="btnGoHistory" class="btn btn-ghost">History</button>
+      <button id="btnGoDisplay" class="btn btn-ghost">Display</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- TOKEN PAGE -->
+    <section id="pageToken" class="page">
+      <div class="grid">
+
+        <div class="card">
+          <div class="card-head">
+            <h2>Generate Token</h2>
+            <div class="pill" id="pillLive">Live • Firestore</div>
+          </div>
+
+          <form id="visitorForm" autocomplete="off">
+            <div class="row">
+              <div class="field">
+                <label>Name</label>
+                <input id="name" type="text" placeholder="Visitor name" required />
+              </div>
+
+              <div class="field">
+                <label>Mobile Number</label>
+                <input id="phone" type="tel" placeholder="03xx-xxxxxxx" required />
+                <div class="hint">Alert appears if this mobile exists in records.</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>Address</label>
+                <input id="address" type="text" placeholder="City / Area / Full address" />
+              </div>
+              <div class="field">
+                <label>Purpose of Visit</label>
+                <input id="purpose" type="text" placeholder="Appointment / Inquiry / Admission..." />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>Other Info (optional)</label>
+                <input id="otherInfo" type="text" placeholder="Reference / Department / Notes..." />
+              </div>
+
+              <div class="field">
+                <label>Priority</label>
+                <select id="priority">
+                  <option value="normal" selected>Normal</option>
+                  <option value="vip">VIP</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="split">
+              <div class="toggle-wrap">
+                <label class="toggle">
+                  <input id="manualMode" type="checkbox" />
+                  <span class="toggle-ui"></span>
+                </label>
+                <div>
+                  <div class="toggle-title">Manual Token (Special Visitors)</div>
+                  <div class="toggle-sub">Enable to type your own token number.</div>
+                </div>
+              </div>
+
+              <div class="field manual-field" id="manualBox">
+                <label>Manual Token #</label>
+                <input id="manualToken" type="text" placeholder="e.g., VIP-01 or 120" />
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="submit" class="btn btn-primary" id="btnGenerate">
+                Generate • Save • Print
+              </button>
+
+              <button type="button" class="btn btn-secondary" id="btnPrintLast" disabled>
+                Print Last Token
+              </button>
+
+              <label class="check">
+                <input id="soundAlert" type="checkbox" checked />
+                <span>Sound alerts</span>
+              </label>
+
+              <label class="check">
+                <input id="voiceEnabled" type="checkbox" checked />
+                <span>Voice enabled</span>
+              </label>
+            </div>
+
+            <div class="last-token">
+              <div class="last-token-left">
+                <div class="muted">Last Token</div>
+                <div id="lastToken" class="token-big">—</div>
+              </div>
+              <div class="last-token-right">
+                <div class="muted">Date / Time</div>
+                <div id="lastDateTime" class="token-time">—</div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="card card-side">
+          <div class="card-head">
+            <h2>Queue Preview</h2>
+            <div class="pill" id="queueCountPill">0 waiting</div>
+          </div>
+
+          <div class="queue" id="queueList">
+            <div class="queue-empty">No visitors yet.</div>
+          </div>
+
+          <div class="side-footer">
+            <div class="muted">Tip: Use Display screen for TV/LED to call tokens.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HISTORY PAGE -->
+    <section id="pageHistory" class="page hidden">
+      <div class="card">
+        <div class="card-head">
+          <h2>History Sheet (Live)</h2>
+
+          <!-- ✅ Added only: print range filter + print button -->
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <select id="printRange" class="print-range">
+              <option value="all" selected>All</option>
+              <option value="today">Today</option>
+              <option value="month">This Month</option>
+              <option value="year">This Year</option>
+            </select>
+
+            <button id="btnPrintHistoryA4" class="btn btn-secondary">Print A4 Report</button>
+            <div class="pill">Realtime</div>
+          </div>
+        </div>
+
+        <div class="filters">
+          <div class="field">
+            <label>Search (any field)</label>
+            <input id="historySearch" type="text" placeholder="Type name / phone / token / address / purpose..." />
+          </div>
+
+          <div class="field">
+            <label>Priority</label>
+            <select id="historyPriority">
+              <option value="all" selected>All</option>
+              <option value="normal">Normal</option>
+              <option value="vip">VIP</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Token Type</label>
+            <select id="historyTokenType">
+              <option value="all" selected>All</option>
+              <option value="auto">Auto</option>
+              <option value="manual">Manual</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Date/Time</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Address</th>
+                <th>Purpose</th>
+                <th>Other Info</th>
+                <th>Priority</th>
+                <th>Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyTbody">
+              <tr><td colspan="10" class="muted">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISPLAY PAGE -->
+    <section id="pageDisplay" class="page hidden">
+      <div class="card">
+        <div class="card-head">
+          <h2>Now Serving Display</h2>
+          <div class="pill" id="displayClock">—</div>
+        </div>
+
+        <div class="display-wrap">
+          <div class="display-box">
+            <img src="logo.png" class="display-logo" alt="Logo" />
+            <div class="display-title">NOW SERVING</div>
+            <div id="nowServing" class="display-token">—</div>
+            <div id="nowServingTime" class="display-time">—</div>
+
+            <div class="display-actions">
+              <button id="btnUnlockVoice" class="btn btn-secondary">Unlock Voice</button>
+              <button id="btnCallNext" class="btn btn-primary">Call Next</button>
+              <button id="btnRepeatCall" class="btn btn-secondary">Repeat</button>
+              <button id="btnFullscreen" class="btn btn-ghost">Fullscreen</button>
+              <button id="btnClearNow" class="btn btn-ghost">Clear</button>
+            </div>
+
+            <div class="muted" style="margin-top:10px;">
+              Click <b>Unlock Voice</b> once (browser rule).
+            </div>
+          </div>
+
+          <div class="display-list">
+            <div class="display-title2">UP NEXT (Waiting)</div>
+            <div class="upnext" id="upNextList"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite">
+    <div class="toast-dot"></div>
+    <div class="toast-text" id="toastText">—</div>
+    <button class="toast-x" id="toastClose" aria-label="Close">×</button>
+  </div>
+
+  <script type="module" src="apps.js"></script>
+</body>
+</html>

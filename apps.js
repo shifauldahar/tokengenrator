@@ -213,7 +213,7 @@ const PRINTER_OFFSETS = { xIn: 0.80, yIn: 0.50 };
 
 function printToken({ tokenNumber, dateText, timeText }){
   const w = window.open("", "_blank", "width=420,height=520");
-  const logoUrl = "logo1.png";
+  const logoUrl = "https://raw.githubusercontent.com/shifauldahar/Record-keeping/b3a3663fe8ce92d63a3275c7395433a387d9230e/logo1.png";
   const x = PRINTER_OFFSETS?.xIn ?? 0;
   const y = PRINTER_OFFSETS?.yIn ?? 0;
 
@@ -807,3 +807,4 @@ function printHistoryA4(rows){
   w.document.write(html);
   w.document.close();
 }
+

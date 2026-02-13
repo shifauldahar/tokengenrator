@@ -586,7 +586,6 @@ function applyPrintRange(rows){
   });
 }
 
-/* A4 Print */
 function printHistoryA4(rows){
   const w = window.open("", "_blank", "width=1200,height=900");
   const t = nowLocal();
@@ -601,11 +600,12 @@ function printHistoryA4(rows){
 
   const total = sortedRows.length;
 
-  const tableRows = sortedRows.map((r)=>{
+  // ✅ Serial Number Added (index + 1)
+  const tableRows = sortedRows.map((r, index)=>{
     const dt = `${r.dateText||""} ${r.timeText||""}`.trim();
     return `
       <tr>
-        <td class="mono">${escapeHtml(r.tokenNumber||"")}</td>
+        <td class="mono">${index + 1}</td>
         <td class="mono">${escapeHtml(dt)}</td>
         <td>${escapeHtml(r.name||"")}</td>
         <td class="mono">${escapeHtml(r.phone||"")}</td>
@@ -720,7 +720,7 @@ function printHistoryA4(rows){
       <table>
         <thead>
           <tr>
-            <th>Token</th>
+            <th>Sr. No</th>
             <th>Date/Time</th>
             <th>Name</th>
             <th>Mobile</th>
@@ -786,4 +786,5 @@ async function deleteAllVisitorsAndReset(){
   const todayPK = pkParts().ymd;
   await setDoc(counterRef, { lastNumber: 0, lastDate: todayPK, updatedAt: serverTimestamp() }, { merge:true });
 }
+
 

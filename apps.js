@@ -200,7 +200,7 @@ const PRINTER_OFFSETS = { xIn: 0.90, yIn: 0 };
 
 function printToken({ tokenNumber, dateText, timeText }){
   const w = window.open("", "_blank", "width=420,height=420");
-  const logoUrl = "https://raw.githubusercontent.com/shifauldahar/tokengenrator/647e3f4364da72d7c8e26f02bb58a912d5ae5431/logo.png";
+  const logoUrl = "https://raw.githubusercontent.com/shifauldahar/tokengenrator/647e3f4364da72d7c8e26f02bb58a912d5ae5431/logo1.png";
   const x = PRINTER_OFFSETS?.xIn ?? 0;
   const y = PRINTER_OFFSETS?.yIn ?? 0;
 
@@ -786,3 +786,4 @@ async function deleteAllVisitorsAndReset(){
   const todayPK = pkParts().ymd;
   await setDoc(counterRef, { lastNumber: 0, lastDate: todayPK, updatedAt: serverTimestamp() }, { merge:true });
 }
+

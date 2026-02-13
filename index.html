@@ -14,14 +14,13 @@
       <img class="brand-logo" src="https://raw.githubusercontent.com/shifauldahar/tokengenrator/647e3f4364da72d7c8e26f02bb58a912d5ae5431/logo.png" alt="Shifa-ul-Dahar Logo" />
       <div class="brand-text">
         <div class="brand-title">SHIFA-UL-DAHAR</div>
-        <div class="brand-subtitle">Visitor Queue & Token System</div>
+        <div class="brand-subtitle">Visitor Token System</div>
       </div>
     </div>
 
     <div class="top-actions">
       <button id="btnGoToken" class="btn btn-ghost active">Token</button>
       <button id="btnGoHistory" class="btn btn-ghost">History</button>
-      <button id="btnGoDisplay" class="btn btn-ghost">Display</button>
     </div>
   </header>
 
@@ -62,22 +61,6 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="field">
-                <label>Other Info (optional)</label>
-                <input id="otherInfo" type="text" placeholder="Reference / Department / Notes..." />
-              </div>
-
-              <div class="field">
-                <label>Priority</label>
-                <select id="priority">
-                  <option value="normal" selected>Normal</option>
-                  <option value="vip">VIP</option>
-                  <option value="urgent">Urgent</option>
-                </select>
-              </div>
-            </div>
-
             <div class="split">
               <div class="toggle-wrap">
                 <label class="toggle">
@@ -109,11 +92,6 @@
                 <input id="soundAlert" type="checkbox" checked />
                 <span>Sound alerts</span>
               </label>
-
-              <label class="check">
-                <input id="voiceEnabled" type="checkbox" checked />
-                <span>Voice enabled</span>
-              </label>
             </div>
 
             <div class="last-token">
@@ -131,16 +109,16 @@
 
         <div class="card card-side">
           <div class="card-head">
-            <h2>Queue Preview</h2>
-            <div class="pill" id="queueCountPill">0 waiting</div>
+            <h2>Recent Tokens</h2>
+            <div class="pill" id="recentCountPill">0 records</div>
           </div>
 
-          <div class="queue" id="queueList">
+          <div class="queue" id="recentList">
             <div class="queue-empty">No visitors yet.</div>
           </div>
 
           <div class="side-footer">
-            <div class="muted">Tip: Use Display screen for TV/LED to call tokens.</div>
+            <div class="muted">Tip: History sheet has edit/delete (only within 24 hours).</div>
           </div>
         </div>
 
@@ -153,7 +131,6 @@
         <div class="card-head">
           <h2>History Sheet (Live)</h2>
 
-          <!-- ✅ Added only: print range filter + print button -->
           <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
             <select id="printRange" class="print-range">
               <option value="all" selected>All</option>
@@ -163,6 +140,8 @@
             </select>
 
             <button id="btnPrintHistoryA4" class="btn btn-secondary">Print A4 Report</button>
+            <button id="btnClearDatabase" class="btn btn-ghost">Delete All Data</button>
+
             <div class="pill">Realtime</div>
           </div>
         </div>
@@ -171,16 +150,6 @@
           <div class="field">
             <label>Search (any field)</label>
             <input id="historySearch" type="text" placeholder="Type name / phone / token / address / purpose..." />
-          </div>
-
-          <div class="field">
-            <label>Priority</label>
-            <select id="historyPriority">
-              <option value="all" selected>All</option>
-              <option value="normal">Normal</option>
-              <option value="vip">VIP</option>
-              <option value="urgent">Urgent</option>
-            </select>
           </div>
 
           <div class="field">
@@ -203,54 +172,19 @@
                 <th>Mobile</th>
                 <th>Address</th>
                 <th>Purpose</th>
-                <th>Other Info</th>
-                <th>Priority</th>
                 <th>Type</th>
-                <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="historyTbody">
-              <tr><td colspan="10" class="muted">Loading…</td></tr>
+              <tr><td colspan="8" class="muted">Loading…</td></tr>
             </tbody>
           </table>
         </div>
-      </div>
-    </section>
 
-    <!-- DISPLAY PAGE -->
-    <section id="pageDisplay" class="page hidden">
-      <div class="card">
-        <div class="card-head">
-          <h2>Now Serving Display</h2>
-          <div class="pill" id="displayClock">—</div>
+        <div class="muted" style="padding:0 18px 18px;">
+          Note: Edit/Delete buttons work only within <b>24 hours</b> after token generation.
         </div>
-
-        <div class="display-wrap">
-          <div class="display-box">
-            <img src="logo.png" class="display-logo" alt="Logo" />
-            <div class="display-title">NOW SERVING</div>
-            <div id="nowServing" class="display-token">—</div>
-            <div id="nowServingTime" class="display-time">—</div>
-
-            <div class="display-actions">
-              <button id="btnUnlockVoice" class="btn btn-secondary">Unlock Voice</button>
-              <button id="btnCallNext" class="btn btn-primary">Call Next</button>
-              <button id="btnRepeatCall" class="btn btn-secondary">Repeat</button>
-              <button id="btnFullscreen" class="btn btn-ghost">Fullscreen</button>
-              <button id="btnClearNow" class="btn btn-ghost">Clear</button>
-            </div>
-
-            <div class="muted" style="margin-top:10px;">
-              Click <b>Unlock Voice</b> once (browser rule).
-            </div>
-          </div>
-
-          <div class="display-list">
-            <div class="display-title2">UP NEXT (Waiting)</div>
-            <div class="upnext" id="upNextList"></div>
-          </div>
-        </div>
-
       </div>
     </section>
 
@@ -266,4 +200,3 @@
   <script type="module" src="apps.js"></script>
 </body>
 </html>
-
